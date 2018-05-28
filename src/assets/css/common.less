@@ -1,0 +1,36 @@
+@border_color: #E4E7ED;
+@border_focus_color: #409EFF;
+// input输入框的样式
+.input_item {
+	height: 24px;
+	line-height: 24px;
+	padding: 4px 8px;
+	border-radius: 6px;
+	outline: none;
+	border: 1px solid @border_color;
+}
+.input_item:focus {
+	border: 1px solid @border_focus_color;
+}
+
+// 按钮的样式
+.btn_default, .btn_primary {
+	border-radius: 6px;
+	background-color: #fff;
+	padding: 6px 8px;
+	outline: none;
+	border: 1px solid @border_color;
+	cursor: pointer;
+}
+.btn_default:hover {
+	background-color: #E7EFF8;
+	color: #409EFF;
+}
+
+.btn_primary {
+	background-color: #409EFF;
+	color: #fff;
+}
+.btn_primary:hover {
+	background-color: #6DB5FC;
+}
