@@ -25,7 +25,7 @@ axios.interceptors.response.use(function (response) {
     // 关闭加载条加载的效果
     // 请求成功，返回结果
     NProgress.done()
-	return response
+	return response.data
 }, (error) => {
 	let type = 'error'
 	let msg = ''
