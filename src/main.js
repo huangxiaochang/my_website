@@ -8,15 +8,18 @@ import * as utils from './utils/index.js' // 全局方法
 import directives from './directives' // 注册全局指令
 import './assets/css/common.less' // 引入公共样式t
 import 'nprogress/nprogress.css' // 加载条的样式
+import components from './components'
+import store from './vuex'  // 引入状态管理
 
 Vue.config.productionTip = false
-// 全局方法的定义
-Vue.prototype.utils = utils
+Vue.prototype.utils = utils // 全局方法的定义
+Vue.use(components)  // 注册全局组件
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

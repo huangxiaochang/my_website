@@ -2,6 +2,8 @@ import config from './config'
 import Vue from 'vue'
 import axios from 'axios'
 import NProgress from 'nprogress' // 引入加载条
+import store from '../vuex'
+import actions from '../vuex/actions'
 
 // axios 的全局配置
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
@@ -17,6 +19,10 @@ axios.interceptors.request.use(function (config) {
 	return config
 }, (error) => {
 	console.log('请求错误:', error)
+	actions.show_notification(store, {
+		is_show: true,
+		content: error
+	})
 	return Promise.reject(error)
 })
 
@@ -43,6 +49,11 @@ axios.interceptors.response.use(function (response) {
 	// 提示错误信息
 	// 关闭加载条
 	console.log('服务器错误:', error)
+	actions.show_notification(store, {
+		is_show: true,
+		type: type,
+		content: msg
+	})
 	NProgress.done()
 	return Promise.reject(error)
 })
