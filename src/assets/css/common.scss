@@ -1,0 +1,83 @@
+// 公共样式
+
+$scrollbarThumbColor: rgba(165, 175, 185, 0.4);  // 滚动条滑块的颜色
+$backgroundColor: #F0F3F4;  // 背景色
+
+body {
+ font-family: 'Avenir', Helvetica, Arial, sans-serif; 
+}
+a {
+  text-decoration: none;
+}
+
+// 多行文本截断
+@mixin lineClamp($line: 1) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: $line;
+  -webkit-box-orient: vertical;
+}
+
+// 清除浮动
+@mixin clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+// collapse 动画的样式
+.collapse-transition {
+  transition: 0.4s height ease-in-out, 0.4s padding-top ease-in-out, 0.4s padding-bottom ease-in-out;
+}
+
+.collapse-horizontal-transition {
+  transition: 0.4s width ease-in-out, 0.4s padding-left ease-in-out, 0.4s padding-right ease-in-out;
+}
+
+
+// 滚动条全局样式
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-button {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $scrollbarThumbColor;
+  border: 0 none #ffffff;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $scrollbarThumbColor;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: $scrollbarThumbColor;
+}
+
+::-webkit-scrollbar-track-piece, ::-webkit-scrollbar-track {
+  background: $backgroundColor;
+  border: 0 none #ffffff;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-track-piece:hover, ::-webkit-scrollbar-track:hover {
+  background: $backgroundColor;
+}
+
+::-webkit-scrollbar-track-piece:active, ::-webkit-scrollbar-track:active {
+  background: $backgroundColor;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+

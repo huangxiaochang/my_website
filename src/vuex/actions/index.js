@@ -1,5 +1,7 @@
-import notification from './notification.js'
+import user from './user.js'
+import route from './route.js'
 
 export default {
-	...notification
+	...user,
+	...route
 }

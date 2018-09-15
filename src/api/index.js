@@ -1,16 +1,19 @@
-import config from './config'
-import Vue from 'vue'
+import config from './config.js'
 import axios from 'axios'
-import NProgress from 'nprogress' // 引入加载条
-import store from '../vuex'
-import actions from '../vuex/actions'
+import NProgress from 'nprogress'
 
-// axios 的全局配置
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.withCredentials = true
 axios.defaults.baseURL = config.baseURL
+// axios.defaults.baseURL = ''
 // axios.defaults.headers.common['Authorization'] = config.token
+
+// axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
+// axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'PUT,POST,GET,DELETE,OPTIONS'
+// axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Content-Type'
+// axios.defaults.headers.common['Content-Type'] = 'application/json;charset=utf-8'
+
 
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
@@ -19,19 +22,15 @@ axios.interceptors.request.use(function (config) {
 	return config
 }, (error) => {
 	console.log('请求错误:', error)
-	actions.show_notification(store, {
-		is_show: true,
-		content: error
-	})
 	return Promise.reject(error)
 })
 
 // 添加响应拦截器
 axios.interceptors.response.use(function (response) {
     // 关闭加载条加载的效果
-    // 请求成功，返回结果
     NProgress.done()
-	return response.data
+    // 请求成功，返回结果
+	return response
 }, (error) => {
 	let type = 'error'
 	let msg = ''
@@ -47,14 +46,8 @@ axios.interceptors.response.use(function (response) {
 		msg = error.message === 'Network Error' ? '网络错误！请检查网络是否正常' : error.message
 	}
 	// 提示错误信息
-	// 关闭加载条
-	console.log('服务器错误:', error)
-	actions.show_notification(store, {
-		is_show: true,
-		type: type,
-		content: msg
-	})
 	NProgress.done()
+	console.log('服务器错误:', error)
 	return Promise.reject(error)
 })
 
