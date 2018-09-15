@@ -1,5 +1,10 @@
 <template>
-	<my-form></my-form>
+	<form-wrap>
+		<form-item label="姓名">
+			<input type="text">
+		</form-item>
+	</form-wrap>
+	
 	<!-- <section class="login-wrap">
 		<input type="text" v-model="form.name">
 		<input type="password" v-model="form.psd">
