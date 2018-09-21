@@ -139,3 +139,8 @@ class Cookie {
 
 export const cookie_mange = new Cookie()
 
+// 判断是否是纯对象
+export const isPlainObject = function (obj) {
+	return toString.call(obj) === '[object Object]'
+}
+
