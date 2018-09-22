@@ -12,23 +12,9 @@
 			<h-form-item label="密码" prop="psd">
 				<h-input :rows="1" :autosize="{maxRows: 2}" resize="vertical" type="textarea" maxlength="10" v-model="form.psd" placeholder="请输入密码"></h-input>
 			</h-form-item>
-			<!-- <h-form-item label="姓名" prop="user.name">
-				<input type="text" v-model="form.user.name" @blur="handlerBlur">
-			</h-form-item> -->
-			<!-- <h-form-item label="密码" prop="psd" isRequired>
-				<input type="text" v-model="form.psd" @blur="handlerBlur">
-			</h-form-item>
-			<h-form-item label="其他" isRequired>
-				<h-form-item label="邮箱" prop="email">
-					<input type="text" v-model="form.email" @blur="handlerBlur">
-				</h-form-item>
-			</h-form-item>
-			<h-form-item label="密码" :key="index" :prop="`age.${index}.value`" v-for="(item, index) in form.age" :rule="{required: true, message: 'age必填', trigger: 'blur'}">
-				<input type="text" v-model="item.value" @blur="handlerBlur">
-			</h-form-item> -->
 		</h-form>
 		<br>
-		<h-button  @click="save">queding</h-button><h-button :disabled="true" type="primary" @click="resetFields">重置</h-button><h-button  type="success" @click="clearFields">清空</h-button> <h-button type="text">文字</h-button><h-button :disabled="true" type="info">文字</h-button><h-button :disabled="true" type="warn">文字</h-button><h-button type="danger">文字</h-button>
+		<h-button  @click="save">queding</h-button><h-button :disabled="true" type="primary" @click="resetFields">重置</h-button><h-button  type="success" @click="clearFields">清空</h-button> <h-button type="text">文字</h-button><h-button @click="showNotification" type="info">显示提示信息</h-button><h-button :disabled="true" type="warn">文字</h-button><h-button type="danger">文字</h-button>
 	</div>
 	
 	<!-- <section class="login-wrap">
@@ -170,8 +156,14 @@
 				this.$refs['ruleForm'].clearFields()
 				console.log(this.form)
 			},
-			handlerBlur () {
-				this.broadcast('HFormItem', 'HForm.blur', [this])
+			showNotification () {
+				this.$notify({
+					type: 'error',
+					title: '这是一段提示信息',
+					message: 'asda<br>hhh',
+					isUseHTMLString: true,
+					position: 'top-right'
+				})
 			},
 			login () {
 				userLogin(this.form).then((res) => {
