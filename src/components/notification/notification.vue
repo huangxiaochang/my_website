@@ -6,6 +6,8 @@
 		  :class="[horizontalClass]"
 		  :style="verticalPosition"
 		  @click="handlerClick"
+		  @mouseenter="clearTimer"
+		  @mouseleave="startTimer"
 		>
 			<i :style="{color: iconColor}" :class="[iconClass, defaultIconClass]" class="notification-icon-wrap" v-if="type || iconClass"></i>
 			<div class="notification-content-wrap">
@@ -13,7 +15,7 @@
 				<p class="notification-content" v-if="isUseHTMLString" v-html="message"></p>
 				<p class="notification-content" v-else> {{ message }}</p>
 			</div>
-			<span class="notification-close-btn" v-if="isShowCloseBtn">x</span>
+			<span class="notification-close-btn" @click="close" v-if="isShowCloseBtn">x</span>
 		</aside>
 	</transition>
 </template>
@@ -31,16 +33,21 @@
 		data () {
 			return {
 				show: false,
-				position: 'top-left',
+				position: 'top-right',
 				topOffset: 14,
 				onClick: null,
+				onClose: null, // 组件内部的关闭之后的回调函数
 				title: '提示',
 				iconClass: '',
 				iconColor: '',
 				type: '',
 				isShowCloseBtn: true,
 				isUseHTMLString: false,
-				message: ''
+				message: '',
+				hasClosed: false,
+				autoClose: true, // 是否自动关闭
+				duration: 3000, // 默认显示的时间
+				timer: null
 			}
 		},
 		computed: {
@@ -59,12 +66,49 @@
 				return this.type && icoMapType[this.type] ? icoMapType[this.type]: ''
 			}
 		},
+		watch: {
+			hasClosed (newVal, oldVal) {
+				if (newVal) {
+					this.show = false
+					// 动画结束之后， 移除模板元素， 不然的话，还会占用位置
+					this.$el.addEventListener('transitionend', this.destoryElement)
+				}
+			}
+		},
 		methods: {
+			destoryElement () {
+				this.$el.removeEventListener('transitionend', this.destoryElement)
+				this.$destroy(true)
+				this.$el.parentNode.removeChild(this.$el)
+				this.clearTimer()
+			},
 			handlerClick (ev) {
 				if (typeof this.onClick === 'function') {
 					this.onClick()
 				}
+			},
+			close () {
+				this.hasClosed = true
+				if (typeof this.onClose === 'function') {
+					// 调用组件内部定义的回调函数， onClose()方法具体在notification.js中定义，
+					this.onClose()
+				}
+			},
+			clearTimer () {
+				clearTimeout(this.timer)
+			},
+			startTimer () {
+				if (this.autoClose) {
+					this.timer = setTimeout(() => {
+						if (!this.hasClosed) {
+							this.close()
+						}
+					}, this.duration)
+				}
 			}
+		},
+		mounted () {
+			this.startTimer()
 		}
 	}
 </script>
@@ -76,13 +120,14 @@
 	.notification-wrap {
 		position: fixed;
 		border: 1px solid $wrap-border-color;
+		background: #fff;
 		box-shadow: 0 0 10px $shadow-color;
 		padding: 12px 18px;
 		min-width: 200px;
 		max-width: 600px;
 		overflow: hidden;
 		box-sizing: border-box;
-		transition: transform 0.3s;
+		transition: transform 0.3s, opacity 0.3s, top 0.3s, bottom 0.3s, left 0.3s, right 0.3s;
 		&.right {
 			right: 14px;
 		}

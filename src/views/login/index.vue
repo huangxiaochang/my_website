@@ -66,6 +66,7 @@
 <script type="text/babel">
 	import { userLogin, get_user_info, login_out, upload_avatar, register, get_code, modify_user_info } from 'api/login.js'
 	import emitter from 'utils/emitter.js'
+	import Notification from '@/components/notification/notification.js'
 
 	export default {
 		name: 'login',
@@ -119,7 +120,8 @@
 					password: '',
 					roles: [],
 					operate_permission: []
-				}
+				},
+				count: 1
 			}
 		},
 		mixins: [emitter],
@@ -157,11 +159,25 @@
 				console.log(this.form)
 			},
 			showNotification () {
+				/*
 				this.$notify({
-					type: 'error',
-					title: '这是一段提示信息',
+					type: 'success',
+					title: `这是第${this.count++}段提示信息`,
 					message: 'asda<br>hhh',
 					isUseHTMLString: true,
+					autoClose: true,
+					isShowCloseBtn: true,
+					position: 'top-right'
+				})
+				*/
+				//this.$notify.success('sfd<br>fsd')
+				new Notification({
+					type: 'success',
+					title: `这是第${this.count++}段提示信息`,
+					message: 'asda<br>hhh',
+					isUseHTMLString: true,
+					autoClose: true,
+					isShowCloseBtn: true,
 					position: 'top-right'
 				})
 			},
