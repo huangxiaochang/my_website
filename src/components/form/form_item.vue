@@ -173,7 +173,6 @@
 				this.dispatch('HForm', 'form.addFields', [this])
 				// 存储初始值，resetField是用到
 				let obj = this.getPropByPath()
-				console.log(obj.model[obj.key], '1')
 				Object.defineProperty(this, 'initialValue', {value: obj.model[obj.key]})
 
 				// 处理触发有效性检查的trigger,由于triggrt的触发规则，AsyncValidator没有实现，所以只能

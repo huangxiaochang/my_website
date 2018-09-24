@@ -139,7 +139,6 @@
         		const maxRows = this.autosize.maxRows
 
         		this.calcStyle = calcTextareaHeight(this.$refs.textarea, minRows, maxRows)
-        		console.log(this.calcStyle, '000')
 
 			},
 			handlerInput (ev) {

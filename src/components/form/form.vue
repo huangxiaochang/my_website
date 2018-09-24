@@ -48,7 +48,6 @@
 			// 数据有效性检查
 			validate (callback) {
 				if (!this.model) {
-					console.warn("model of form is required for validate to work")
 					return
 				}
 				// 如果没有回调函数，返回一个Promise

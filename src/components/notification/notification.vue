@@ -34,7 +34,7 @@
 			return {
 				show: false,
 				position: 'top-right',
-				topOffset: 14,
+				topOffset: 14, 
 				onClick: null,
 				onClose: null, // 组件内部的关闭之后的回调函数
 				title: '提示',

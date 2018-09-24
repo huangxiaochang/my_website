@@ -29,6 +29,8 @@ function isNeedToLogin (to) {
 // 在登录的情况下，如果已经生成过动态路由，直接next(),否者先生成动态路由再next(), 如果没有权限， next(/403)
 // 在还没有登录的情况下， 判断该路由页面是否需要登录， 如果不需要，直接next(), 否者跳转到登录页面
 router.beforeEach((to,from, next) => {
+	next()
+	/*
 	if (cookie_mange.get_cookie('user_cookie')) {
 		// 还没有生成动态路由
 		if (store.getters.get_async_routes.length === 0) {
@@ -54,5 +56,6 @@ router.beforeEach((to,from, next) => {
 			next('/login')
 		}
 	}
+	*/
 })
 export default router
