@@ -1,4 +1,5 @@
 <template>
+	<div>
 	<h-menu router menuItemColor="#fff" backgroundColor="#515354" defaultActive="">
 		<h-menu-item index="1" disabled>
 			<i class="iconfont icon-success"></i>
@@ -8,11 +9,19 @@
 			<i class="iconfont icon-info"></i>
 			<span slot="title">菜单2</span>
 		</h-menu-item>
+		<h-sub-menu>
+			<span slot="title">
+				<i class="iconfont icon-warning"></i>
+				<span>子菜单1</span>
+			</span>
+			<h-menu-item index="1-1">子菜单1-1</h-menu-item>
+		</h-sub-menu>
 		<h-menu-item index="/404">
 			<i class="iconfont icon-error"></i>
 			<span slot="title">菜单3</span>
 		</h-menu-item>
 	</h-menu>
+	</div>
 </template>
 
 <script type="text/babel">

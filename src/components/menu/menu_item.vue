@@ -87,7 +87,8 @@
 		white-space: nowrap;
 		height: $defalut-height;
 		line-height: $defalut-height;
-		padding: 0 18px;
+		padding: 0 20px;
+		font-size: 16px;
 		&:hover {
 			cursor: pointer;
 		}

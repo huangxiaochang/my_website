@@ -74,9 +74,9 @@
 	}
 </script>
 
-<style type="text/css" rel="stylesheet" lang="scss" scoped>
+<style type="text/scss" rel="stylesheet" lang="scss" scoped>
 	$menu-bg: #4B4D4F;
-	$default-width: 220px;
+	$default-width: 240px;
 
 	.nav-menu {
 		position: relative;;
