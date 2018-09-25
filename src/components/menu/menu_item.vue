@@ -2,7 +2,7 @@
 	<li
 	  class="menu-item"
 	  ref="menuItem"
-	  :style="{ color: itemColor, backgroundColor: backgroundClass }"
+	  :style="{ color: itemColor, backgroundColor: backgroundClass, paddingLeft: paddingLeft + 'px' }"
 	  @mouseenter="handlerHover(1)"
 	  @mouseleave="handlerHover(2)"
 	  @click="handlerClick"
@@ -25,19 +25,20 @@
 		mixins: [emitter],
 		data () {
 			return {
-				isHover: false
+				isHover: false,
+				paddingLeft: 20
 			}
 		},
 		computed: {
 			itemColor() {
 				if (this.active) {
-					return this.rootMenu.activeColor
+					return this.$parent.activeColor || this.rootMenu.activeColor
 				} else {
-					return this.color ? this.color : this.rootMenu.menuItemColor ? this.rootMenu.menuItemColor : ''
+					return this.textColor || this.$parent.textColor || this.rootMenu.textColor || ''
 				}
 			},
 			backgroundClass () {
-				return this.active ? this.rootMenu.activeBackground || this.backgroundColor : this.backgroundColor
+				return this.active ? this.rootMenu.activeBackground || this.backgroundColor : this.backgroundColor || this.$parent.subBackgroundColor
 			},
 			hoverBgColor () {
 				return this.hoverColor ? this.hoverColor : this.rootMenu.hoverColor
@@ -52,7 +53,7 @@
 				default: ''
 			},
 			hoverColor: String,
-			color: String,
+			textColor: String,
 			index: {
 				type: String,
 				required: true
@@ -64,6 +65,11 @@
 			}
 		},
 		mounted () {
+			if (this.$parent.$options.componentName === 'HSubMenu') {
+				this.paddingLeft = this.$parent.paddingLeft + 20
+				this.$parent.addItem(this)
+			}
+			this.rootMenu.addItem(this)
 		},
 		methods: {
 			handlerHover (type) {
@@ -76,6 +82,12 @@
 					this.$emit('click', this)
 				}
 			}
+		},
+		beforeDestroy () {
+			this.rootMenu.removeItem(this)
+			if (this.$parent.$options.componentName === 'HSubMenu') {
+				this.$parent.removeItem(this)
+			}
 		}
 	}
 </script>
@@ -87,7 +99,6 @@
 		white-space: nowrap;
 		height: $defalut-height;
 		line-height: $defalut-height;
-		padding: 0 20px;
 		font-size: 16px;
 		&:hover {
 			cursor: pointer;

@@ -28,7 +28,9 @@
 		},
 		data () {
 			return {
-				activeIndex: this.defaultActive
+				activeIndex: this.defaultActive,
+				items: {},
+				hasOpenSubmenus: []
 			}
 		},
 		props: {
@@ -46,13 +48,23 @@
 				type: String,
 				default: '#5E5E60'
 			},
-			menuItemColor: String,
+			textColor: String,
 			type: {
 				type: String,
 				default: 'vertical'
 			},
 			defaultActive: String,
-			router: Boolean
+			router: Boolean,
+			openMenus: {
+				type: Array,
+				default () {
+					return []
+				}
+			},
+			uniqueOpened: {
+				type: Boolean,
+				default: false
+			}
 		},
 		methods: {
 			handlerItemClick (menuItem) {
@@ -66,10 +78,35 @@
 						console.error(error)
 					})
 				}
+			},
+			handlerSubmenuClick (isOpen, submenu) {
+				if (isOpen) {
+					this.$emit('open', submenu)
+					if (this.uniqueOpened && submenu.$parent.$options.componentName === 'HMenu') {
+						this.hasOpenSubmenus.forEach(sub => {
+							sub.isOpen = false
+						})
+						this.hasOpenSubmenus.length = 0
+						this.hasOpenSubmenus.push(submenu)
+					}
+				} else {
+					this.$emit('close', submenu)
+					this.hasOpenSubmenus.splice(this.hasOpenSubmenus.indexOf(submenu), 1)
+				}
+			},
+			addItem (item) {
+				this.$set(this.items, item.index, item)
+			},
+			removeItem (item) {
+				delete this.items[item.index]
 			}
 		},
 		created () {
 			this.$on('item-click', this.handlerItemClick)
+			this.$on('submenu-click', this.handlerSubmenuClick)
+		},
+		mounted () {
+			console.log(this.hasOpenSubmenus)
 		}
 	}
 </script>

@@ -1,6 +1,6 @@
 <template>
 	<div>
-	<h-menu router menuItemColor="#fff" backgroundColor="#515354" defaultActive="">
+	<h-menu router textColor="#fff" backgroundColor="#515354" defaultActive="3-1" :openMenus=openMenus :unique-opened="false">
 		<h-menu-item index="1" disabled>
 			<i class="iconfont icon-success"></i>
 			<span slot="title">菜单1</span>
@@ -9,12 +9,25 @@
 			<i class="iconfont icon-info"></i>
 			<span slot="title">菜单2</span>
 		</h-menu-item>
-		<h-sub-menu>
+		<h-sub-menu index="3" subBackgroundColor="#ABACAD" subHoverColor="#626262" textColor="green">
 			<span slot="title">
-				<i class="iconfont icon-warning"></i>
+				<i class="iconfont icon-warning" style="color: red;"></i>
 				<span>子菜单1</span>
 			</span>
-			<h-menu-item index="1-1">子菜单1-1</h-menu-item>
+			<h-menu-item index="/login">子菜单1-1</h-menu-item>
+			<h-sub-menu index="3-1" subBackgroundColor="#333232">
+				<span slot="title">
+				<i class="iconfont icon-success"></i>
+				三级菜单
+				</span>
+				<h-menu-item index="1-1-1">子菜单1-1-1</h-menu-item>
+			</h-sub-menu>
+		</h-sub-menu>
+		<h-sub-menu index="4">
+			<span slot="title">
+				子菜单2
+			</span>
+			<h-menu-item index="4-1-1">子菜单4-1</h-menu-item>
 		</h-sub-menu>
 		<h-menu-item index="/404">
 			<i class="iconfont icon-error"></i>
@@ -41,6 +54,7 @@
 				callback()
 			}
 			return {
+				openMenus: ['4', '3-1', '3'],
 				menu_list: menus,
 				rules: {
 					'user.name': {required: true, message: '姓名必填111', trigger: 'blur', validator: name_validator},

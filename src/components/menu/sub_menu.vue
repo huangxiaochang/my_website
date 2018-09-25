@@ -7,22 +7,29 @@
 		componentName: 'HSubMenu',
 		render (h) {
 			const component = (
-				<ul class="subMenu-wrap">
+				<ul class="subMenu-wrap" ref="subMenu">
 					<span 
 					  ref="subMenuTitle"
-					  class="subMenu-title"
+					  class={['subMenu-title', this.disabled ? 'is-disabled' : '']}
 					  on-click={ this.showMoreItem }
 					  on-mouseenter={ this.handlerMouseEnter }
 					  on-mouseleave={ this.handlerMouseLeave }
+					  style={{paddingLeft: this.paddingLeft + 'px', color: this.Color}}
 					 >
 						{ this.$slots.title }
 					</span>
-					<span class={['open-btn', this.isShow ? 'is-open' : '']} on-click={ this.showMoreItem }>
+					<span 
+					  class={['open-btn', this.isOpen ? 'is-open' : '', this.disabled ? 'is-disabled' : '']}
+					  on-click={ this.showMoreItem }
+					>
 						{ this.$slots.openIcon }
-						<span v-show={ !this.$slots.openIcon }>></span>
+						<i class="iconfont icon-jiantouarrow483" v-show={ !this.$slots.openIcon }></i>
 					</span>
 					<collapse-transition>
-						<div class="subMenu-content" v-show={ this.isShow }>
+						<div 
+						  style={{backgroundColor: this.backgroundClass}} 
+						  v-show={ this.isOpen }
+						>
 							{ this.$slots.default }
 						</div>
 					</collapse-transition>
@@ -31,31 +38,97 @@
 			return component
 		},
 		inject: ['rootMenu'],
+		mixins: [emitter],
 		props: {
 			backgroundColor: {
 				type: String,
 				default: ''
 			},
-			hoverColor: String
+			hoverColor: String,
+			index: {
+				type: String,
+				required: true
+			},
+			disabled: Boolean,
+			subBackgroundColor: {
+				type: String,
+				default: ''
+			},
+			subHoverColor: String,
+			activeColor: String,
+			textColor: String
 		},
 		data () {
 			return {
-				isShow: false
+				isOpen: false,
+				paddingLeft: 20,
+				items: {}
+			}
+		},
+		computed: {
+			backgroundClass () {
+				return this.subBackgroundColor || this.$parent.subBackgroundColor || this.rootMenu.backgroundColor
+			},
+			Color () {
+				return this.$parent.textColor || this.rootMenu.textColor
 			}
 		},
 		methods: {
 			showMoreItem () {
-				this.isShow = !this.isShow
+				if (this.disabled) { return }
+				this.isOpen = !this.isOpen
+				this.$emit('click', this.isOpen)
+				this.dispatch('HMenu', 'submenu-click', [this.isOpen, this])
 			},
-			handlerMouseEnter () {
-				this.$refs.subMenuTitle.style.background = this.hoverColor || this.rootMenu.hoverColor
+			handlerMouseEnter (ev) {
+				if (this.disabled) { return }
+				this.$refs.subMenuTitle.style.background = this.hoverColor || this.$parent.subHoverColor || this.rootMenu.hoverColor
 			},
-			handlerMouseLeave () {
-				this.$refs.subMenuTitle.style.background = this.backgroundColor || this.rootMenu.backgroundColor
+			handlerMouseLeave (ev) {
+				if (this.disabled) { return }
+				this.$refs.subMenuTitle.style.background = this.backgroundColor || this.$parent.subBackgroundColor || this.rootMenu.backgroundColor
+			},
+			addItem (item) {
+				this.$set(this.items, item.index, item)
+			},
+			removeItem (item) {
+				delete this.items[item.index]
+			}
+		},
+		created () {
+			if (this.$parent.$options.componentName === 'HSubMenu') {
+				this.paddingLeft += 20
 			}
 		},
 		mounted () {
-			console.log(88)
+			this.rootMenu.addItem(this)
+			if (this.$parent.$options.componentName === 'HSubMenu') {
+				this.$parent.addItem(this)
+				for (let key in this.items) {
+					this.$parent.addItem(this.items[key])
+				}
+			}
+
+			if (this.items.hasOwnProperty(this.rootMenu.activeIndex)) {
+				this.isOpen = true
+				if (this.rootMenu.uniqueOpened && this.$parent.$options.componentName === 'HMenu') {
+					this.rootMenu.hasOpenSubmenus.push(this)
+				}
+			} else {
+				// 默认打开的submenu
+				!this.rootMenu.uniqueOpened && this.rootMenu.openMenus.some(index => {
+					if (index === this.index || this.items.hasOwnProperty(index)) {
+						this.isOpen = true
+					}
+				})
+			}
+		},
+		beforeDestroy () {
+			if (this.$parent.$options.componentName === 'HSubMenu') {
+				for (let key in this.items) {
+					this.$parent.removeItem(this.items[key])
+				}
+			}
 		}
 	}
 </script>
@@ -75,7 +148,6 @@
 			font-size: 16px;
 			color: white;
 			width: 100%;
-			padding: 0 20px;
 			box-sizing: border-box;
 			&:hover {
 				cursor: pointer;
@@ -83,18 +155,22 @@
 		}
 		.open-btn {
 			position: absolute;
-			width: 20px;
-			height: 20px;
+			width: 16px;
+			height: 16px;
 			right: 14px;
 			top: 15px;
 			color: #909399;
 			cursor: pointer;
+			transition: transform 0.3s;
+			transform-origin: 50% 50%;
 		}
 		.is-open {
-			transform: rotate(180deg);
+			transition: transform 0.3s;
+			transform: rotate(-180deg);
+			transform-origin: 50% 50%;
 		}
-		.subMenu-content {
-			padding: 0 14px;
-		}
-	}
+		.is-disabled {
+			cursor: not-allowed!important;
+			opacity: 0.5;
+		}	}
 </style>
