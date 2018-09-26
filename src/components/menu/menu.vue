@@ -13,13 +13,7 @@
 					{ this.$slots.default }
 				</ul>
 			)
-			if (this.collapse) {
-				return (
-					<collapse-transition>{ component }</collapse-transition>
-				)
-			} else {
-				return component
-			}
+			return component
 		},
 		provide() {
 			return {
@@ -122,8 +116,8 @@
 		margin: 0;
 		padding: 0;
 		list-style: none;
-		width: $default-width;
 		border-right: 1px solid #e6e6e6;
+		box-sizing: border-box;
 		overflow: auto;
 		&::-webkit-scrollbar {
 		  width: 2px;

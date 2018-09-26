@@ -2,7 +2,7 @@
 	<li
 	  class="menu-item"
 	  ref="menuItem"
-	  :style="{ color: itemColor, backgroundColor: backgroundClass, paddingLeft: paddingLeft + 'px' }"
+	  :style="{ color: itemColor, backgroundColor: backgroundClass, paddingLeft: paddingLeft + 'px'}"
 	  @mouseenter="handlerHover(1)"
 	  @mouseleave="handlerHover(2)"
 	  @click="handlerClick"
@@ -12,7 +12,9 @@
 	  }"
 	>
 		<span class="menu-item-icon" v-if="$slots.default"><slot></slot></span>
-		<slot name="title"></slot>
+		<collapse-transition direction="horizontal">
+			<slot name="title" v-if="!rootMenu.collapse"></slot>
+		</collapse-transition>
 	</li>
 </template>
 
@@ -100,6 +102,8 @@
 		height: $defalut-height;
 		line-height: $defalut-height;
 		font-size: 16px;
+		padding-right: 14px;
+		transition: width 0.4s;
 		&:hover {
 			cursor: pointer;
 		}
@@ -115,5 +119,12 @@
 			margin-right: 6px;
 			vertical-align: middle;
 		}
+	}
+	.fade-enter-active, .fade-leave-active {
+		transition: transform 0.4s;
+		transform: translateX(100%);
+	}
+	.fade-enter, .fade-leave-to {
+		transform: translateX(100%);
 	}
 </style>
