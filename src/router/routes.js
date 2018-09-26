@@ -1,5 +1,6 @@
 import Login from 'views/login/index.vue'
 // lazying import component
+const Register = resolve => require(['views/login/register.vue'], resolve)
 const Home = resolve => require(['views/home/index.vue'], resolve)
 
 /*
@@ -29,10 +30,20 @@ export const constantRouteMap = [
 		children: []
 	},
 	{
+		path: '/register',
+		name: 'register',
+		component: Register,
+		meta: {
+			title: '注册',
+			isShow: false,
+			auth: false,
+			icon: ''
+		}
+	},
+	{
 		path: '/403',
 		name: '403',
 		component: resolve => require(['views/403.vue'], resolve),
-		isShow: false,
 		icon: '',
 		meta: {
 			title: '403',
@@ -46,7 +57,6 @@ export const constantRouteMap = [
 		path: '/404',
 		name: '404',
 		component: resolve => require(['views/404.vue'], resolve),
-		isShow: false,
 		icon: '',
 		meta: {
 			title: '404',
@@ -75,7 +85,7 @@ export const asyncRouteMap = [
 		children: []
 	},
 	{
-		path: '/personal',
+		path: '/qq',
 		name: 'personal',
 		component: Home,
 		meta: {
@@ -83,7 +93,7 @@ export const asyncRouteMap = [
 			isShow: true,
 			auth: true,
 			icon: '',
-			roles: ['root', 'admin'],
+			roles: ['root', 'admin', 'member'],
 			operate_permission: [] // added in route.beforeEach base to user permission
 		},
 		children: [
@@ -97,6 +107,34 @@ export const asyncRouteMap = [
 					auth: true,
 					icon: '',
 					roles: ['root', 'admin', 'member'],
+					operate_permission: [] // added in route.beforeEach base to user permission
+				},
+				children: [
+					{
+						path: '/personal9',
+						name: 'personal2',
+						component: Home,
+						meta: {
+							title: '修改邮箱',
+							isShow: true,
+							auth: true,
+							icon: '',
+							roles: ['root', 'admin', 'member'],
+							operate_permission: [] // added in route.beforeEach base to user permission
+						}
+					}
+				]
+			},
+			{
+				path: '/personal3',
+				name: 'personal3',
+				component: Home,
+				meta: {
+					title: '修改信息',
+					isShow: true,
+					auth: true,
+					icon: '',
+					roles: ['root', 'admin'],
 					operate_permission: [] // added in route.beforeEach base to user permission
 				}
 			}

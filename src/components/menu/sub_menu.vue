@@ -146,7 +146,6 @@
 			height: $defalut-height;
 			line-height: $defalut-height;
 			font-size: 16px;
-			color: white;
 			width: 100%;
 			box-sizing: border-box;
 			&:hover {
@@ -172,5 +171,6 @@
 		.is-disabled {
 			cursor: not-allowed!important;
 			opacity: 0.5;
-		}	}
+		}	
+	}
 </style>

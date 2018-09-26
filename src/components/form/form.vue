@@ -1,7 +1,7 @@
 <template>
-	<form class="form-wrap">
+	<div class="form-wrap">
 		<slot></slot>
-	</form>
+	</div>
 </template>
 
 <script type="text/babel">
@@ -85,6 +85,7 @@
 			},
 			// 重置表单
 			resetFields () {
+
 				if (!this.model) {
 					process.env.NODE_ENV !== 'production' && console.warn("model is required for resetFields to work")
 					return
@@ -96,6 +97,7 @@
 			},
 			// 清空表单
 			clearFields () {
+				console.log(88)
 				if (!this.model) {
 					process.env.NODE_ENV !== 'production' && console.warn("model is required for clearFields to work")
 					return
@@ -114,5 +116,6 @@
 	
 	.form-wrap {
 		box-shadow: 0 0 8px $shadow-cr;
+		padding: 12px;
 	}
 </style>

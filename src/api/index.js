@@ -1,6 +1,7 @@
 import config from './config.js'
 import axios from 'axios'
 import NProgress from 'nprogress'
+import Notification from '@/components/notification/notification.js'
 
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 axios.defaults.xsrfCookieName = 'csrftoken'
@@ -22,6 +23,10 @@ axios.interceptors.request.use(function (config) {
 	return config
 }, (error) => {
 	console.log('请求错误:', error)
+	new Notification({
+		type: 'error',
+		message: error
+	})
 	return Promise.reject(error)
 })
 
@@ -47,6 +52,10 @@ axios.interceptors.response.use(function (response) {
 	}
 	// 提示错误信息
 	NProgress.done()
+	new Notification({
+		type: type,
+		message: msg
+	})
 	console.log('服务器错误:', error)
 	return Promise.reject(error)
 })

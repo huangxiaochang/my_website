@@ -11,7 +11,7 @@
 	  	'is-disabled': disabled
 	  }"
 	>
-		<span class="menu-item-icon"><slot></slot></span>
+		<span class="menu-item-icon" v-if="$slots.default"><slot></slot></span>
 		<slot name="title"></slot>
 	</li>
 </template>
@@ -25,7 +25,6 @@
 		mixins: [emitter],
 		data () {
 			return {
-				isHover: false,
 				paddingLeft: 20
 			}
 		},
@@ -38,10 +37,11 @@
 				}
 			},
 			backgroundClass () {
-				return this.active ? this.rootMenu.activeBackground || this.backgroundColor : this.backgroundColor || this.$parent.subBackgroundColor
+				return this.active ? this.rootMenu.activeBackground || this.backgroundColor : this.backgroundColor || this.$parent.subBackgroundColor || this.rootMenu.backgroundColor
 			},
 			hoverBgColor () {
-				return this.hoverColor ? this.hoverColor : this.rootMenu.hoverColor
+				if (this.active) { return }
+				return this.hoverColor || this.rootMenu.hoverColor
 			},
 			active () {
 				return this.index === this.rootMenu.activeIndex

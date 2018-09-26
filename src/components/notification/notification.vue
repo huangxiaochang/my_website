@@ -15,7 +15,7 @@
 				<p class="notification-content" v-if="isUseHTMLString" v-html="message"></p>
 				<p class="notification-content" v-else> {{ message }}</p>
 			</div>
-			<span class="notification-close-btn" @click="close" v-if="isShowCloseBtn">x</span>
+			<i class="notification-close-btn iconfont icon-guanbi" @click="close" v-if="isShowCloseBtn"></i>
 		</aside>
 	</transition>
 </template>

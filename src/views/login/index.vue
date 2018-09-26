@@ -1,185 +1,64 @@
 <template>
-	<div>
-	<h-menu router textColor="#fff" backgroundColor="#515354" defaultActive="3-1" :openMenus=openMenus :unique-opened="false">
-		<h-menu-item index="1" disabled>
-			<i class="iconfont icon-success"></i>
-			<span slot="title">菜单1</span>
-		</h-menu-item>
-		<h-menu-item index="2" :route="{path: '/403', query: {name: 'hxc'}}">
-			<i class="iconfont icon-info"></i>
-			<span slot="title">菜单2</span>
-		</h-menu-item>
-		<h-sub-menu index="3" subBackgroundColor="#ABACAD" subHoverColor="#626262" textColor="green">
-			<span slot="title">
-				<i class="iconfont icon-warning" style="color: red;"></i>
-				<span>子菜单1</span>
-			</span>
-			<h-menu-item index="/login">子菜单1-1</h-menu-item>
-			<h-sub-menu index="3-1" subBackgroundColor="#333232">
-				<span slot="title">
-				<i class="iconfont icon-success"></i>
-				三级菜单
-				</span>
-				<h-menu-item index="1-1-1">子菜单1-1-1</h-menu-item>
-			</h-sub-menu>
-		</h-sub-menu>
-		<h-sub-menu index="4">
-			<span slot="title">
-				子菜单2
-			</span>
-			<h-menu-item index="4-1-1">子菜单4-1</h-menu-item>
-		</h-sub-menu>
-		<h-menu-item index="/404">
-			<i class="iconfont icon-error"></i>
-			<span slot="title">菜单3</span>
-		</h-menu-item>
-	</h-menu>
-	</div>
+	<h-form ref="ruleForm" class="form-wrap" :model="login_form" :rules="login_rules" :label-style="{ width: '76px'}">
+		<h-form-item label="用户名" prop="name">
+			<h-input type="text" v-model="login_form.name"></h-input>
+		</h-form-item>
+		<h-form-item type="password" label="密码" prop="password">
+			<h-input type="password" v-model="login_form.password"></h-input>
+		</h-form-item>
+		<h-button style="width: 100px;margin-left: 90px;" type="primary" @click="login">登录</h-button>
+		<span style="margin-left: 30px;">还没账号?<h-button type="text" @click="to_register">注册</h-button></span>
+	</h-form>
 </template>
 
 <script type="text/babel">
-	import { userLogin, get_user_info, login_out, upload_avatar, register, get_code, modify_user_info } from 'api/login.js'
-	import emitter from 'utils/emitter.js'
-	import Notification from '@/components/notification/notification.js'
-	import menus from '@/data/menus.js'
+	import { userLogin } from 'api/login.js'
 
 	export default {
 		name: 'login',
 		data () {
-			const name_validator = function (rule, value, callback) {
+			const password_validator = function (rule, value, callback) {
 				// 对于需要验证的是数组部位空，要自定义validator来进行
-				if (value.length === 0) {
-					callback('名字不能等于11')
+				if ((/\s+/g.test(value))) {
+					callback('密码不能有空格')
 				}
 				callback()
 			}
 			return {
-				openMenus: ['4', '3-1', '3'],
-				menu_list: menus,
-				rules: {
-					'user.name': {required: true, message: '姓名必填111', trigger: 'blur', validator: name_validator},
-					name: [
-						{ required: true, message: '姓名必填', trigger: 'blur'},
-						{ required: true, message: '姓名不能为11', trigger: 'change', validator: name_validator}
-					],
-					psd: [{required: true, message: '密码必填', trigger: 'blur'}],
-					email: {required: true, message: '邮箱必填', trigger: 'blur'}
-				},
-				form: {
-					user: {
-						name: ['777']
-					},
-					name: '123',
-					psd: '21fasdfsaghret撒旦法鲨的撒发生高峰期去饭堂更范德萨',
-					email: '67',
-					age: [{value: ''}, {value: '67'}]
-				},
-				labelStyle: {
-					width: '80px',
-					display: 'inline-block',
-					textAlign: 'left'
-				},
-				registion: {
-					account_name: '',
-					password: '',
-					user_email: '',
-					verification_code: ''
-				},
-				user_info: {
-					avatar_url: ''
-				},
-				form_data: null,
-				modify_form: {
-					user_id: 0,
+				login_form: {
 					name: '',
-					email: '',
-					code: '',
-					password: '',
-					roles: [],
-					operate_permission: []
+					password: ''
 				},
-				count: 1
+				login_rules: {
+					name: [
+						{ required: true, message: '请填写用户名', trigger: 'blur'}
+					],
+					password: [
+						{required: true, message: '密码必填', trigger: 'blur'},
+						{min: 6, max: 18, trigger: 'change', validator: password_validator}
+					]
+				}
 			}
-		},
-		mixins: [emitter],
-		watch: {
-			'form.name' () {
-				
-			}
-		},
-		mounted () {
-			// this.$refs.input.focus()
 		},
 		methods: {
-			save() {
-				// this.$refs['ruleForm'].validate((valid) => {
-				// 	console.log(valid, 'valid')
-				// 	if (valid) {
-				// 		console.log('验证通过')
-				// 	} else {
-				// 		console.log('数据不符合要求')
-				// 	}
-				// })
-				console.log(this.form)
-				this.$refs['ruleForm'].validate().then(() => {
-					console.log('验证通过')
-				}).catch(() => {
-					console.log('数据不符合要求')
+			login() {
+				this.$refs.ruleForm.validate((valid) => {
+					if (valid) {
+						userLogin(this.login_form).then((res) => {
+							if (res.success === 1) {
+								this.$router.push({
+									path: '/home'
+								})
+							} else {
+								this.$notify.warning(res.msg)
+							}
+						})
+					}
 				})
 			},
-			resetFields () {
-				this.$refs['ruleForm'].resetFields()
-			},
-			clearFields () {
-				this.$refs['ruleForm'].clearFields()
-			},
-			showNotification () {
-				/*
-				this.$notify({
-					type: 'success',
-					title: `这是第${this.count++}段提示信息`,
-					message: 'asda<br>hhh',
-					isUseHTMLString: true,
-					autoClose: true,
-					isShowCloseBtn: true,
-					position: 'top-right'
-				})
-				*/
-				//this.$notify.success('sfd<br>fsd')
-				new Notification({
-					type: 'success',
-					title: `这是第${this.count++}段提示信息`,
-					message: 'asda<br>hhh',
-					isUseHTMLString: true,
-					autoClose: true,
-					isShowCloseBtn: true,
-					position: 'top-right'
-				})
-			},
-			login () {
-				userLogin(this.form).then((res) => {					this.$router.push({
-						path: 'home'
-					})
-				})
-			},
-			get_user_info () {
-				get_user_info().then((res) => {
-					this.user_info = res
-				})
-			},
-			loginOut () {
-				login_out().then((res) => {
-				})
-			},
-			handlerChange (ev) {
-				let files = ev.target.files
-				this.form_data = new FormData()
-				this.form_data.append('file_name', files[0].name)
-				this.form_data.append('file', files[0])
-			},
-			upload () {
-				upload_avatar(this.form_data).then((res) => {
-					console.log(res)
+			to_register () {
+				this.$router.push({
+					path: '/register'
 				})
 			},
 			get_code (email) {
@@ -191,22 +70,17 @@
 				register(this.registion).then((res) => {
 					console.log(res)
 				})
-			},
-			modify_user_info (type) {
-				if (type === 2) {
-					this.modify_form.user_id = 1
-				}
-				modify_user_info(this.modify_form).then((res) => {
-					console.log(res)
-				})
-			},
-			export_user_info () {
-				this.utils.exportFile('/user_info/export_user_info')
 			}
 		}
 	}
 </script>
 
 <style type="text/css" rel="stylesheet/scss" lang="scss" scoped>
-	
+	.form-wrap {
+		position: absolute;
+		width: 400px;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -68%);
+	}
 </style>

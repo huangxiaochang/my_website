@@ -35,10 +35,13 @@
 		},
 		props: {
 			collapse: Boolean,
-			backgroundColor: String,
+			backgroundColor: {
+				type :String,
+				default: '#fff'
+			},
 			activeColor: {
 				type: String,
-				default: 'rgb(255, 208, 75)'
+				default: '#409eff'
 			},
 			activeBackground: {
 				type: String,
@@ -46,7 +49,7 @@
 			},
 			hoverColor: {
 				type: String,
-				default: '#5E5E60'
+				default: '#D8E9F9'
 			},
 			textColor: String,
 			type: {
@@ -104,23 +107,32 @@
 		created () {
 			this.$on('item-click', this.handlerItemClick)
 			this.$on('submenu-click', this.handlerSubmenuClick)
-		},
-		mounted () {
-			console.log(this.hasOpenSubmenus)
 		}
 	}
 </script>
 
 <style type="text/scss" rel="stylesheet" lang="scss" scoped>
-	$menu-bg: #4B4D4F;
+	$menu-bg: rgb(84, 92, 100);
 	$default-width: 240px;
 
 	.nav-menu {
-		position: relative;;
+		position: relative;
+		display: inline-block;
 		background-color: $menu-bg;
 		margin: 0;
 		padding: 0;
 		list-style: none;
 		width: $default-width;
+		border-right: 1px solid #e6e6e6;
+		overflow: auto;
+		&::-webkit-scrollbar {
+		  width: 2px;
+		  height: 2px;
+		}
+
+		&::-webkit-scrollbar-button {
+		  width: 2px;
+		  height: 2px;
+		}
 	}
 </style>

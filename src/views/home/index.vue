@@ -1,27 +1,34 @@
 <template>
 	<section class="home">
-		<sidebar class="sidebar-wrap" :isCollapse="isCollapse"></sidebar>
-		<!-- <div class="main-container" :class="{'hidle-wrap': isCollapse}">
-			<nav-bar :menus="get_menu_list">
-				<i class="iconfont icon-zhankai- more_btn" :class="{'hidle-more-btn': isCollapse}" @click="isCollapse = !isCollapse"></i>7777
-				<template slot-scope="menu">
-					<div v-for=" child in menu" v-if="menu.children && menu.children.length !== 0">
-						{{child.name}}
-						<p v-for="item in child.children"> {{item.name}}</p>
-					</div>
-				</template>
-			</nav-bar>
-			<tag-views>
-				23332344444
-			</tag-views>
-			<app-main>sfg</app-main>
-			777222
-		</div> -->
+		<h-menu router>
+			<template v-for="(menu, index) in get_menu_list">
+				<h-menu-item v-if="menu.isShow && menu.children.length === 0" :index="menu.path" :key="menu.path">
+					<span slot="title"> {{ menu.title || menu.name }}</span>
+				</h-menu-item>
+				<h-sub-menu v-if="menu.children.length !== 0" :index="`${index}`">
+					<template slot="title">
+						<span>{{ menu.title || menu.name }}</span>
+					</template>
+					<template v-for="(child, childIndex) in menu.children">
+						<h-menu-item v-if="child.isShow && child.children.length === 0" :index="child.path" :key="child.path">
+							<span slot="title"> {{ child.title || child.name }}</span>
+						</h-menu-item>
+						<h-sub-menu v-if="child.children.length !== 0" :index="`${index}-${childIndex}`">
+							<template slot="title">
+								<span>{{ child.title || child.name }}</span>
+							</template>
+							<h-menu-item v-for="item in child.children" v-if="item.isShow" :index="item.path" :key="item.path">
+								<span slot="title"> {{ item.title || item.name }}</span>
+							</h-menu-item>
+						</h-sub-menu>
+					</template>
+				</h-sub-menu>
+			</template>
+		</h-menu>
 	</section>
 </template>
 
 <script type="text/babel">
-	import Sidebar from './sidebar.vue'
 	import AppMain from './app_main.vue'
 	import NavBar from './nav_bar.vue'
 	import TagViews from './tags_views.vue'
@@ -30,7 +37,6 @@
 	export default {
 		name: 'home',
 		components: {
-			Sidebar,
 			AppMain,
 			NavBar,
 			TagViews
@@ -44,6 +50,9 @@
 			...mapGetters([
 				'get_menu_list'
 			])
+		},
+		mounted () {
+			console.log(this.get_menu_list)
 		}
 	}
 </script>
@@ -56,6 +65,7 @@
 		left: 0;
 		right: 0;
 		overflow: hidden;
+
 		.sidebar-wrap {
 			vertical-align: top;
 		}
