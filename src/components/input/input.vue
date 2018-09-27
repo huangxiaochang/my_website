@@ -194,7 +194,7 @@
 	.input-wrap {
 		font-size: 0;
 		position: relative;
-		width: 100%;
+		display: inline-block;
 		.input-inner, .textarea-inner {
 			height: 100%;
 			box-sizing: border-box;

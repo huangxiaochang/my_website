@@ -29,11 +29,17 @@
 				type: Boolean,
 				default: true
 			},
-			labelStyle: {
-				type: Object,
-				default() {
-					return {}
-				}
+			labelWidth: { 
+				type: String,
+				default: '60px'
+			},
+			labelAlign: {
+				type: String,
+				default: 'left'
+			},
+			labelPosition: {
+				type: String,
+				default: 'left'
 			}
 		},
 		created () {

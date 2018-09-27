@@ -1,7 +1,7 @@
 <template>
 	<label :class="{'is-error': invalid === true}" class="form-item" :style="{display: HForm.inline ? 'inline-block' : 'block'}">
-		<span v-if="label !== undefined" class="item-label" :style="HForm.labelStyle"><sup class="required-item" v-if="required">*</sup><slot name="label">{{ label }}</slot></span>
-		<div class="item-content">
+		<span v-if="label !== undefined" class="item-label" :style="labelStyle"><sup class="required-item" v-if="required">*</sup><slot name="label">{{ label }}</slot></span>
+		<div class="item-content" :style="{width: contentWidth}">
 			<slot></slot>
 			<transition name="fade">
 				<div class="tip" v-if="invalid && isShowMessage && HForm.isShowMessage">
@@ -55,6 +55,17 @@
 					flag = rules && rules.required
 				}
 				return this.isRequired || flag
+			},
+			labelStyle () {
+				return {
+					width: this.HForm.labelWidth,
+					textAlign: this.HForm.labelAlign,
+					display: this.HForm.labelPosition === 'left' ? 'inline-block' : 'block'
+				}
+			},
+			contentWidth () {
+				let wd = this.HForm.labelWidth.match(/^(\d+)(px|%)/)
+				return `calc(100% - (6px + ${wd[1]}${wd[2]})`
 			}
 		},
 		methods: {

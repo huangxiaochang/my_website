@@ -26,7 +26,7 @@
 				</h-sub-menu>
 			</template>
 		</h-menu>
-		<div class="main-container" @click="isCollapse = !isCollapse">
+		<div :class="{'main-container': true, 'main-container-collapse': isCollapse}">
 			weqe
 		</div>
 	</section>
@@ -83,6 +83,9 @@
 			font-size: 16px;
 			padding: 10px 0 10px 10px;
 			box-sizing: border-box;
+			&.main-container-collapse {
+				width: calc(100% - 42px);
+			}
 			.more_btn {
 				font-size: 28px;
 				position: absolute;
@@ -94,9 +97,6 @@
 					transition: all 0.5;
 					transform: rotateZ(360deg);
 				}
-			}
-			&.hidle-wrap {
-				width: calc(100% - 65px);
 			}
 		}
 	}

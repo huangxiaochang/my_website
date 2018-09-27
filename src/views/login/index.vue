@@ -1,5 +1,5 @@
 <template>
-	<h-form ref="ruleForm" class="form-wrap" :model="login_form" :rules="login_rules" :label-style="{ width: '76px'}">
+	<h-form ref="ruleForm" class="form-wrap" :model="login_form" :rules="login_rules" labelWidth="76px" labelAlign="right">
 		<h-form-item label="用户名" prop="name">
 			<h-input type="text" v-model="login_form.name"></h-input>
 		</h-form-item>
@@ -59,16 +59,6 @@
 			to_register () {
 				this.$router.push({
 					path: '/register'
-				})
-			},
-			get_code (email) {
-				get_code(email).then((res) => {
-					console.log(res, 'code')
-				})
-			},
-			user_registion () {
-				register(this.registion).then((res) => {
-					console.log(res)
 				})
 			}
 		}

@@ -1,5 +1,5 @@
 <template>
-	<h-form class="form-wrap" :model="form" ref="form" :rules="rules" :label-style="{width: '84px'}">
+	<h-form class="form-wrap" :model="form" ref="form" :rules="rules" labelWidth="84px">
 		<h-form-item label="用户名" prop="name">
 			<h-input v-model="form.name"></h-input>
 		</h-form-item>
@@ -12,8 +12,9 @@
 		<h-form-item label="邮箱" prop="email">
 			<h-input v-model="form.email"></h-input>
 		</h-form-item>
-		<h-form-item label="验证码" prop="code">
+		<h-form-item label="验证码" prop="code" style="width: 100%;">
 			<h-input v-model="form.code"></h-input>
+			<h-button @click="get_code" style="display: inline-block;width: 100px">获取验证码</h-button>
 		</h-form-item>
 		<h-button style="width: 100px;margin-left: 90px;" type="primary" @click="register">注册</h-button>
 		<span style="margin-left: 30px;">已有账号?<h-button type="text" @click="to_login">登录</h-button></span>
@@ -52,6 +53,15 @@
 			}
 		},
 		methods: {
+			get_code (email) {
+				get_code(email).then((res) => {
+					this.$notify({
+						type: res.success === 1 ? 'success' : 'warning',
+						message: res.msg,
+						autoClose: false
+					})
+				})
+			},
 			register () {
 				this.$refs.form.validate((valid) => {
 					if (valid) {

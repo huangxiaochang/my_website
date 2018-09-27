@@ -120,10 +120,11 @@
 	.notification-wrap {
 		position: fixed;
 		border: 1px solid $wrap-border-color;
+		border-radius: 10px;
 		background: #fff;
 		box-shadow: 0 0 10px $shadow-color;
 		padding: 12px 18px;
-		min-width: 200px;
+		min-width: 300px;
 		max-width: 600px;
 		overflow: hidden;
 		box-sizing: border-box;

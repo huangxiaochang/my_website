@@ -67,6 +67,7 @@
 
 	.button-wrap {
 		display: inline-block;
+		overflow: hidden;
 		white-space: nowrap;
 		outline: none;
 		padding: 8px 14px;
