@@ -7,7 +7,7 @@
 			const component = (
 				<ul 
 				role="menu"
-				class="nav-menu"
+				class={{'nav-menu': true, 'is-collapse': this.collapse}}
 				style={{ backgroundColor: this.backgroundColor || '' }}
 				>
 					{ this.$slots.default }
@@ -107,7 +107,7 @@
 
 <style type="text/scss" rel="stylesheet" lang="scss" scoped>
 	$menu-bg: rgb(84, 92, 100);
-	$default-width: 240px;
+	$default-width: 200px;
 
 	.nav-menu {
 		position: relative;
@@ -116,9 +116,15 @@
 		margin: 0;
 		padding: 0;
 		list-style: none;
+		width: 240px;
 		border-right: 1px solid #e6e6e6;
 		box-sizing: border-box;
 		overflow: auto;
+		transition: width 0.4s;
+		&.is-collapse {
+			width: 42px;
+			overflow: hidden;
+		}
 		&::-webkit-scrollbar {
 		  width: 2px;
 		  height: 2px;

@@ -21,6 +21,7 @@
 					<span 
 					  class={['open-btn', this.isOpen ? 'is-open' : '', this.disabled ? 'is-disabled' : '']}
 					  on-click={ this.showMoreItem }
+					  v-show={ !this.rootMenu.collapse }
 					>
 						{ this.$slots.openIcon }
 						<i class="iconfont icon-jiantouarrow483" v-show={ !this.$slots.openIcon }></i>
@@ -145,6 +146,8 @@
 			display: inline-block;
 			height: $defalut-height;
 			line-height: $defalut-height;
+			overflow: hidden;
+			white-space: nowrap;
 			font-size: 16px;
 			width: 100%;
 			box-sizing: border-box;
@@ -156,7 +159,7 @@
 			position: absolute;
 			width: 16px;
 			height: 16px;
-			right: 14px;
+			right: 10px;
 			top: 15px;
 			color: #909399;
 			cursor: pointer;

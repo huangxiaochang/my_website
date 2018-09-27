@@ -12,9 +12,7 @@
 	  }"
 	>
 		<span class="menu-item-icon" v-if="$slots.default"><slot></slot></span>
-		<collapse-transition direction="horizontal">
-			<slot name="title" v-if="!rootMenu.collapse"></slot>
-		</collapse-transition>
+		<slot name="title"></slot>
 	</li>
 </template>
 
@@ -103,7 +101,6 @@
 		line-height: $defalut-height;
 		font-size: 16px;
 		padding-right: 14px;
-		transition: width 0.4s;
 		&:hover {
 			cursor: pointer;
 		}
@@ -119,12 +116,5 @@
 			margin-right: 6px;
 			vertical-align: middle;
 		}
-	}
-	.fade-enter-active, .fade-leave-active {
-		transition: transform 0.4s;
-		transform: translateX(100%);
-	}
-	.fade-enter, .fade-leave-to {
-		transform: translateX(100%);
 	}
 </style>

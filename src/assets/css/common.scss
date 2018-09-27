@@ -37,6 +37,10 @@ a {
   transition: 0.4s width ease-in-out, 0.4s padding-left ease-in-out, 0.4s padding-right ease-in-out;
 }
 
+.opacity-transition {
+  transition: opacity .3s cubic-bezier(.55,0,.1,1);
+}
+
 
 // 滚动条全局样式
 ::-webkit-scrollbar {

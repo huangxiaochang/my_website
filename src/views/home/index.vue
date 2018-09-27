@@ -1,11 +1,5 @@
 <template>
 	<section class="home">
-		<!-- <h-menu router class="sidebar-wrap" :collapse="isCollapse">
-			<h-menu-item index="4444">
-				<i class="iconfont icon-success"></i>
-				<span slot="title"> 菜单银黄胶囊</span>
-			</h-menu-item>
-		</h-menu> -->
 		<h-menu router class="sidebar-wrap" :collapse="isCollapse">
 			<template v-for="(menu, index) in get_menu_list">
 				<h-menu-item v-if="menu.isShow && menu.children.length === 0" :index="menu.path" :key="menu.path">
@@ -32,9 +26,6 @@
 				</h-sub-menu>
 			</template>
 		</h-menu>
-		<!-- <collapse-transition direction="horizontal">
-			<p style="font-size: 16px; display: inline-block;" v-if="isCollapse">sdfgsrgtseretfgwertwertwertwerfgv </p>
-		</collapse-transition> -->
 		<div class="main-container" @click="isCollapse = !isCollapse">
 			weqe
 		</div>
