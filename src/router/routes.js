@@ -108,22 +108,7 @@ export const asyncRouteMap = [
 					icon: '',
 					roles: ['root', 'admin', 'member'],
 					operate_permission: [] // added in route.beforeEach base to user permission
-				},
-				children: [
-					{
-						path: '/personal9',
-						name: 'personal2',
-						component: Home,
-						meta: {
-							title: '修改邮箱',
-							isShow: true,
-							auth: true,
-							icon: '',
-							roles: ['root', 'admin', 'member'],
-							operate_permission: [] // added in route.beforeEach base to user permission
-						}
-					}
-				]
+				}
 			},
 			{
 				path: '/personal3',
@@ -139,6 +124,20 @@ export const asyncRouteMap = [
 				}
 			}
 		]
+	},
+	{
+		path: '/component',
+		name: 'component',
+		component: Home,
+		meta: {
+			title: '组件',
+			isShow: true,
+			auth: true,
+			icon: '',
+			roles: ['root', 'admin', 'member'],
+			operate_permission: [] // added in route.beforeEach base to user permission
+		},
+		children: []
 	},
 	{
 		path: '*',

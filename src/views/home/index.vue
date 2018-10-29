@@ -47,7 +47,8 @@
 		},
 		data () {
 			return {
-				isCollapse: false
+				isCollapse: false,
+				data_list: []
 			}
 		},
 		computed: {
@@ -56,7 +57,7 @@
 			])
 		},
 		mounted () {
-			console.log(this.get_menu_list)
+			
 		}
 	}
 </script>

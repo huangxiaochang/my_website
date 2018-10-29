@@ -154,3 +154,8 @@ export const isPlainObject = function (obj) {
 	return toString.call(obj) === '[object Object]'
 }
 
+// 显示图片
+export const show_img = function(url) {
+	return `${config.baseURL}${url}`
+}
+

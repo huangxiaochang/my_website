@@ -1,7 +1,11 @@
 import axios from './index.js'
 
 export function userLogin (user) {
-	return axios.get(`/user_info/login/?name=${user.name}&password=${user.password}`).then(respone => respone.data)
+	return axios.post(`/user_info/login/`, user).then(respone => respone.data)
+}
+
+export function getCaptcha () {
+	return axios.get(`/user_info/login/`).then(respone => respone.data)
 }
 
 export function register (data) {
