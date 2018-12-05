@@ -29,7 +29,11 @@ function isNeedToLogin (to) {
 // 在登录的情况下，如果已经生成过动态路由，直接next(),否者先生成动态路由再next(), 如果没有权限， next(/403)
 // 在还没有登录的情况下， 判断该路由页面是否需要登录， 如果不需要，直接next(), 否者跳转到登录页面
 router.beforeEach((to,from, next) => {
-	if (cookie_mange.get_cookie('user_cookie')) {
+	// 注意，判断的顺序不能改变
+	if (to.meta.auth === false) {
+		// 不需要登陆
+		next()
+	} else if (cookie_mange.get_cookie('user_cookie')) {
 		// 还没有生成动态路由
 		if (store.getters.get_async_routes.length === 0) {
 			store.dispatch('generate_sync_routes', cookie_mange.get_cookie('user_role').split(','))
@@ -42,17 +46,8 @@ router.beforeEach((to,from, next) => {
 			next()
 		}
 	} else {
-		// if (isNeedToLogin(to)) {
-		// 	next('/login')
-		// } else {	
-		// 	next()
-		// }
-		// 可以在没有登录之前，全部跳转到登录页面
-		if (to.path === '/login') {
-			next()
-		} else {
-			next('/login')
-		}
+		// 需要登录但是还有登录
+		next('/login')
 	}
 })
 export default router
