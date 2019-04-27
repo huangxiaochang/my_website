@@ -28,6 +28,10 @@
 		</h-menu>
 		<div :class="{'main-container': true, 'main-container-collapse': isCollapse}">
 			weqe
+			<h-upload-file>
+				<button slot="trigger">上传</button>
+				<span slot="tip">2222</span>
+			</h-upload-file>
 		</div>
 	</section>
 </template>
